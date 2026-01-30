@@ -56,8 +56,8 @@ class Ini extends Parser
 
         if (is_string($value)) {
             // Quote strings that contain special characters or spaces
-            if (preg_match('/[;\s"#]/', $value)) {
-                return '"' . addcslashes($value, '"\\') . '"';
+            if (preg_match('/[\W]/', $value)) {
+                return '"' . $value . '"';
             }
             return $value;
         }

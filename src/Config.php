@@ -41,11 +41,9 @@ class Config
 
     public function delete(string $key): void
     {
-
         if (!isset($this->data[$key])) {
             unset($this->data[$key]);
         }
-
     }
 
     public function __get(string $key): mixed
