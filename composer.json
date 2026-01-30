@@ -1,0 +1,19 @@
+{
+    "name": "jsc-php/configs",
+    "description": "Config file parser and writer",
+    "require": {
+        "php": "^8.5"
+    },
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "JscPhp\\Configs\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "James Cavaliere",
+            "email": "james.cavaliere@gmail.com"
+        }
+    ]
+}
