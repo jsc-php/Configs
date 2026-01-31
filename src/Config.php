@@ -12,9 +12,7 @@ class Config
 {
     private Yaml|Json|Ini $parser;
     private array $data;
-
     private string $file_path;
-
     private array $options = [
         'autosave' => true,
     ];
@@ -43,12 +41,13 @@ class Config
         }
     }
 
-    public function save()
+    public function save(): false|int
     {
-        $this->parser->writeFile($this->data);
+        $content = $this->parser->convertArray($this->data);
+        return file_put_contents($this->file_path, $content);
     }
 
-    public function saveAs(Type $type)
+    public function saveAs(string $file_path, Type $type): false|int
     {
         $parser = match ($type) {
             Type::Ini => new Ini($this->file_path),
@@ -56,7 +55,8 @@ class Config
             Type::Yaml => new Yaml($this->file_path),
             default => throw new Exception("Unsupported file type: {$type->name}")
         };
-        $parser->writeFile($this->data);
+        $content = $parser->convertArray($this->data);
+        return file_put_contents($file_path, $content);
     }
 
     public function delete(string $key): void

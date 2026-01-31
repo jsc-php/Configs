@@ -14,11 +14,7 @@ abstract class Parser
 
     public abstract function parseFile(): array;
 
-    public abstract function writeFile(array $data): void;
+    public abstract function convertArray(array $data): string;
 
-    protected function _write(string $data): void
-    {
-        file_put_contents($this->file_path, $data);
-    }
 
 }

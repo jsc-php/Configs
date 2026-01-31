@@ -4,13 +4,16 @@ namespace JscPhp\Configs\bin;
 
 class Ini extends Parser
 {
-    public function writeFile(array $data): void
+
+
+    public function parseFile(): array
     {
-        if (!is_writable($this->file_path)) {
-            throw new \Exception("{$this->file_path} not writable");
-        }
-        $ini = $this->arrayToIni($data);
-        $this->_write($ini);
+        return parse_ini_file($this->file_path, true, INI_SCANNER_TYPED);
+    }
+
+    public function convertArray(array $data): string
+    {
+        return $this->arrayToIni($data);
     }
 
     private function arrayToIni(array $data): string
@@ -64,10 +67,4 @@ class Ini extends Parser
 
         return (string)$value;
     }
-
-    public function parseFile(): array
-    {
-        return parse_ini_file($this->file_path, true, INI_SCANNER_TYPED);
-    }
-
 }

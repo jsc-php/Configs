@@ -11,9 +11,9 @@ class Yaml extends Parser
         return yaml_parse($contents);
     }
 
-    public function writeFile(array $data): void
+
+    public function convertArray(array $data): string
     {
-        $yaml = yaml_emit($data);
-        $this->_write($yaml);
+        return yaml_emit($data);
     }
 }

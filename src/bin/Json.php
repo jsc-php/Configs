@@ -11,9 +11,8 @@ class Json extends Parser
         return json_decode($json, true);
     }
 
-    public function writeFile(array $data): void
+    public function convertArray(array $data): string
     {
-        $json = json_encode($data);
-        $this->_write($json);
+        return json_encode($data, JSON_PRETTY_PRINT);
     }
 }
