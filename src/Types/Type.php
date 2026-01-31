@@ -7,4 +7,5 @@ enum Type
     case Ini;
     case Yaml;
     case Json;
+    case Xml;
 }

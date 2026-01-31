@@ -5,13 +5,14 @@ namespace JscPhp\Configs;
 use Exception;
 use JscPhp\Configs\bin\Ini;
 use JscPhp\Configs\bin\Json;
+use JscPhp\Configs\bin\Xml;
 use JscPhp\Configs\bin\Yaml;
 use JscPhp\Configs\Types\Type;
 
 class Config
 {
-    private Yaml|Json|Ini $parser;
-    private array $data;
+    private Yaml|Json|Ini|Xml $parser;
+    private array $data = [];
     private string $file_path;
     private array $options = [
         'autosave' => true,
@@ -27,9 +28,10 @@ class Config
             'ini' => new Ini($file_path),
             'json' => new Json($file_path),
             'yaml', 'yml' => new Yaml($file_path),
+            'xml' => new Xml($file_path),
             default => throw new Exception("Unsupported file extension: {$extension}")
         };
-        if (file_exists($file_path) && is_readable($file_path)) {
+        if (file_exists($file_path)) {
             $this->data = $this->parser->parseFile();
         }
     }
@@ -53,6 +55,7 @@ class Config
             Type::Ini => new Ini($this->file_path),
             Type::Json => new Json($this->file_path),
             Type::Yaml => new Yaml($this->file_path),
+            Type::Xml => new Xml($this->file_path),
             default => throw new Exception("Unsupported file type: {$type->name}")
         };
         $content = $parser->convertArray($this->data);

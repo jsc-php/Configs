@@ -3,7 +3,8 @@
   "description": "Config file parser and writer",
   "require": {
     "php": "^8.5",
-    "ext-yaml": "*"
+    "ext-yaml": "*",
+    "ext-simplexml": "*"
   },
   "license": "GPL-3.0",
   "autoload": {
