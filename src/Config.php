@@ -75,13 +75,15 @@ class Config
     private function _delete(array &$array, array $keys): void
     {
         foreach ($keys as $key) {
-            if (is_array($array[$key])) {
-                $this->_delete($array[$key], ...array_slice($keys, 1));
-            } else {
-                unset($array[$key]);
-            }
-            if (empty($array[$key])) {
-                unset($array[$key]);
+            if (array_key_exists($key, $array)) {
+                if (is_array($array[$key])) {
+                    $this->_delete($array[$key], ...array_slice($keys, 1));
+                } else {
+                    unset($array[$key]);
+                }
+                if (empty($array[$key])) {
+                    unset($array[$key]);
+                }
             }
         }
     }
