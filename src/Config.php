@@ -115,7 +115,7 @@ class Config
         } else {
             $working_array = &$this->data;
             for ($i = 0; $i < count($keys) - 1; $i++) {
-                if ($i < count($keys)) {
+                if ($i < (count($keys) - 1)) {
                     if (array_key_exists($keys[$i], $working_array)) {
                         $working_array = &$working_array[$keys[$i]];
                     } else {
