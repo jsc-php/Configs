@@ -15,4 +15,9 @@ class Json extends Parser
     {
         return json_encode($data, JSON_PRETTY_PRINT);
     }
+
+    public function getValidExtensions(): array
+    {
+        return ['json'];
+    }
 }

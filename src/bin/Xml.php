@@ -35,4 +35,8 @@ class Xml extends Parser
     }
 
 
+    public function getValidExtensions(): array
+    {
+        return ['xml'];
+    }
 }

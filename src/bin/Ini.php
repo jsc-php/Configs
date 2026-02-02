@@ -67,4 +67,9 @@ class Ini extends Parser
 
         return (string)$value;
     }
+
+    public function getValidExtensions(): array
+    {
+        return ['ini'];
+    }
 }

@@ -16,5 +16,7 @@ abstract class Parser
 
     public abstract function convertArray(array $data): string;
 
+    public abstract function getValidExtensions(): array;
+
 
 }

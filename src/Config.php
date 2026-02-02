@@ -12,9 +12,9 @@ use JscPhp\Configs\Types\Type;
 class Config
 {
     private Yaml|Json|Ini|Xml $parser;
-    private array $data = [];
-    private string $file_path;
-    private array $options = [
+    private array             $data    = [];
+    private string            $file_path;
+    private array             $options = [
         'autosave' => true,
     ];
 
@@ -23,13 +23,13 @@ class Config
         $this->file_path = $file_path;
         $this->options = array_merge($this->options, $options);
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
-                strToLower(...);
+                     strToLower(...);
         $this->parser = match ($extension) {
-            'ini' => new Ini($file_path),
-            'json' => new Json($file_path),
+            'ini'         => new Ini($file_path),
+            'json'        => new Json($file_path),
             'yaml', 'yml' => new Yaml($file_path),
-            'xml' => new Xml($file_path),
-            default => throw new Exception("Unsupported file extension: {$extension}")
+            'xml'         => new Xml($file_path),
+            default       => throw new Exception("Unsupported file extension: {$extension}")
         };
         if (file_exists($file_path)) {
             $this->data = $this->parser->parseFile();
@@ -52,12 +52,17 @@ class Config
     public function saveAs(string $file_path, Type $type): false|int
     {
         $parser = match ($type) {
-            Type::Ini => new Ini($this->file_path),
+            Type::Ini  => new Ini($this->file_path),
             Type::Json => new Json($this->file_path),
             Type::Yaml => new Yaml($this->file_path),
-            Type::Xml => new Xml($this->file_path),
-            default => throw new Exception("Unsupported file type: {$type->name}")
+            Type::Xml  => new Xml($this->file_path),
+            default    => throw new Exception("Unsupported file type: {$type->name}")
         };
+        $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
+                     strtolower(...);
+        if (!in_array($extension, $parser->getValidExtensions())) {
+            throw new Exception("Invalid file extension: {$extension}");
+        }
         $content = $parser->convertArray($this->data);
         return file_put_contents($file_path, $content);
     }
@@ -69,6 +74,21 @@ class Config
         }
     }
 
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+
+    public function mergeData(array $data): void
+    {
+        $this->data = array_merge($this->data, $data);
+    }
+
     public function __get(string $key): mixed
     {
         return $this->data[$key] ?? null;
@@ -77,6 +97,15 @@ class Config
     public function __set(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
+    }
+
+    public function get(string ...$keys)
+    {
+        $working_array = $this->data;
+        for ($i = 0; $i < count($keys); $i++) {
+            $working_array = $working_array[$keys[$i]] ?? null;
+        }
+        return $working_array;
     }
 
 }

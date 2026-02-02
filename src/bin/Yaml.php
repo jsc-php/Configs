@@ -16,4 +16,9 @@ class Yaml extends Parser
     {
         return yaml_emit($data);
     }
+
+    public function getValidExtensions(): array
+    {
+        return ['yaml', 'yml'];
+    }
 }
