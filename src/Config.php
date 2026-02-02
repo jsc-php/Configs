@@ -110,10 +110,24 @@ class Config
 
     public function set(mixed $value, string ...$keys): void
     {
-        $working_array = &$this->data;
-        for ($i = 0; $i < count($keys) - 1; $i++) {
-            $working_array = &$working_array[$keys[$i]];
+        if (count($keys) === 1) {
+            $this->data[$keys[0]] = $value;
+        } else {
+            $working_array = &$this->data;
+            for ($i = 0; $i < count($keys) - 1; $i++) {
+                if ($i < count($keys)) {
+                    if (array_key_exists($keys[$i], $working_array)) {
+                        $working_array = &$working_array[$keys[$i]];
+                    } else {
+                        $this->data[$keys[$i]] = [];
+                        $working_array = &$this->data[$keys[$i]];
+                    }
+                } else {
+                    $working_array[$keys[$i]] = $value;
+                }
+            }
         }
+
     }
 
 }
