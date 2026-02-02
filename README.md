@@ -29,7 +29,7 @@ composer require jsc-php/configs
 ```php
 use JscPhp\Configs\Config;
 
-// Load a config file (format is detected by extension)
+// Load a config file (format is determined by file extension)
 $config = new Config('config.json');
 
 // Get values
@@ -79,6 +79,7 @@ $config->delete('temporary_key');
 - **JSON**: Uses native `json_encode` and `json_decode`.
 - **YAML**: Uses `yaml_emit` and `yaml_parse` (requires `ext-yaml`).
 - **INI**: Uses `parse_ini_file` with typed scanning and a custom writer supporting sections and multi-value keys.
+- **XML**: Uses `simplexml_load_file` and `simplexml_save_file` (requires `ext-simplexml`).
 
 ## License
 

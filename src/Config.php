@@ -108,4 +108,12 @@ class Config
         return $working_array;
     }
 
+    public function set(mixed $value, string ...$keys): void
+    {
+        $working_array = &$this->data;
+        for ($i = 0; $i < count($keys) - 1; $i++) {
+            $working_array = &$working_array[$keys[$i]];
+        }
+    }
+
 }
