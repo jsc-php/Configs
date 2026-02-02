@@ -67,12 +67,12 @@ class Config
         return file_put_contents($file_path, $content);
     }
 
-    public function delete(string ...$key): void
+    public function delete(string ...$keys): void
     {
-        $this->_delete($this->data, ...$key);
+        $this->_delete($this->data, $keys);
     }
 
-    private function _delete(array &$array, string ...$keys): void
+    private function _delete(array &$array, array $keys): void
     {
         foreach ($keys as $key) {
             if (is_array($array[$key])) {
