@@ -17,9 +17,12 @@ class Xml extends Parser
 
     public function convertArray(array $data): string
     {
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><config></config>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><root></root>');
         $this->arrayToXml($data, $xml);
-        return $xml->asXML();
+        $dom = dom_import_simplexml($xml)->ownerDocument;
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        return $dom->saveXML();
     }
 
     private function arrayToXml(array $data, SimpleXMLElement &$xml): void

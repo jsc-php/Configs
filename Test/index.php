@@ -1,11 +1,11 @@
 <?php
 
+use JscPhp\Configs\Types\Type;
+
 require_once '../vendor/autoload.php';
 
 $config = new \JscPhp\Configs\Config(__DIR__ . '/test.ini');
 
-print_r($config->getAll());
-exit();
 
 // Test Array to INI
 $test_array = [
@@ -28,5 +28,5 @@ $test_array = [
     'numbers'  => [1, 2, 3, 4]
 ];
 
-$config->setData($test_array);
-print_r($config->saveAs('test.ini', \JscPhp\Configs\Types\Type::Ini));
+$config->setAll($test_array);
+print_r($config->saveAs('test.xml', Type::Xml, true));
