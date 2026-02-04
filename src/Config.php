@@ -96,7 +96,7 @@ class Config
         return $this->data;
     }
 
-    public function setData(array $data): void
+    public function setAll(array $data): void
     {
         $this->data = $data;
     }
@@ -144,7 +144,6 @@ class Config
                 }
             }
         }
-
     }
 
 }
