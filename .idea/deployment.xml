@@ -6,6 +6,7 @@
         <serverdata>
           <mappings>
             <mapping deploy="/jsc-php/configs" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/jsc-php/routes" local="$PROJECT_DIR$/../Routes" web="/" />
           </mappings>
         </serverdata>
       </paths>
