@@ -9,21 +9,20 @@ use JscPhp\Configs\bin\Xml;
 use JscPhp\Configs\bin\Yaml;
 use JscPhp\Configs\Types\Type;
 
-class Config
-{
+class Config {
     private Yaml|Json|Ini|Xml $parser;
-    private array             $data    = [];
+    private array             $data          = [];
+    private array             $original_data = [];
     private string            $file_path;
-    private array             $options = [
-        'autosave' => true,
+    private array             $options       = [
+            'autosave' => true,
     ];
 
-    public function __construct(string $file_path, array $options = [])
-    {
+    public function __construct(string $file_path, array $options = []) {
         $this->file_path = $file_path;
         $this->options = array_merge($this->options, $options);
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
-                     strToLower(...);
+                    strToLower(...);
         $this->parser = match ($extension) {
             'ini'         => new Ini($file_path),
             'json'        => new Json($file_path),
@@ -33,24 +32,25 @@ class Config
         };
         if (file_exists($file_path)) {
             $this->data = $this->parser->parseFile();
+            $this->original_data = $this->data;
         }
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         if ($this->options['autosave']) {
             $this->save();
         }
     }
 
-    public function save(): false|int
-    {
+    public function save(): bool|int {
+        if ($this->data === $this->original_data) {
+            return true;
+        }
         $content = $this->parser->convertArray($this->data);
         return file_put_contents($this->file_path, $content);
     }
 
-    public function saveAs(string $file_path, Type $type, bool $return = false): string|false|int
-    {
+    public function saveAs(string $file_path, Type $type, bool $return = false): string|false|int {
         $parser = match ($type) {
             Type::Ini  => new Ini($this->file_path),
             Type::Json => new Json($this->file_path),
@@ -59,7 +59,7 @@ class Config
             default    => throw new Exception("Unsupported file type: {$type->name}")
         };
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
-                     strtolower(...);
+                    strtolower(...);
         if (!in_array($extension, $parser->getValidExtensions())) {
             throw new Exception("Invalid file extension: {$extension}");
         }
@@ -70,13 +70,11 @@ class Config
         return file_put_contents($file_path, $content);
     }
 
-    public function delete(string ...$keys): void
-    {
+    public function delete(string ...$keys): void {
         $this->_delete($this->data, $keys);
     }
 
-    private function _delete(array &$array, array $keys): void
-    {
+    private function _delete(array &$array, array $keys): void {
         foreach ($keys as $key) {
             if (array_key_exists($key, $array)) {
                 if (is_array($array[$key])) {
@@ -91,33 +89,27 @@ class Config
         }
     }
 
-    public function getAll(): array
-    {
+    public function getAll(): array {
         return $this->data;
     }
 
-    public function setAll(array $data): void
-    {
+    public function setAll(array $data): void {
         $this->data = $data;
     }
 
-    public function mergeData(array $data): void
-    {
+    public function mergeData(array $data): void {
         $this->data = array_merge($this->data, $data);
     }
 
-    public function __get(string $key): mixed
-    {
+    public function __get(string $key): mixed {
         return $this->data[$key] ?? null;
     }
 
-    public function __set(string $key, mixed $value): void
-    {
+    public function __set(string $key, mixed $value): void {
         $this->data[$key] = $value;
     }
 
-    public function get(string ...$keys)
-    {
+    public function get(string ...$keys) {
         $working_array = $this->data;
         for ($i = 0; $i < count($keys); $i++) {
             $working_array = $working_array[$keys[$i]] ?? null;
@@ -125,8 +117,7 @@ class Config
         return $working_array;
     }
 
-    public function set(mixed $value, string ...$keys): void
-    {
+    public function set(mixed $value, string ...$keys): void {
         if (count($keys) === 1) {
             $this->data[$keys[0]] = $value;
         } else {

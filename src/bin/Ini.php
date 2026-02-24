@@ -42,7 +42,7 @@ class Ini extends Parser
     private function formatValue($value): string
     {
         if (is_bool($value)) {
-            return $value ? '1' : '0';
+            return $value ? 'true' : 'false';
         }
 
         if (is_numeric($value)) {
