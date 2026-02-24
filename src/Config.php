@@ -11,11 +11,11 @@ use JscPhp\Configs\bin\Yaml;
 use JscPhp\Configs\Types\Type;
 
 class Config {
-    private Yaml|Json|Ini|Xml $parser;
-    private array             $data          = [];
-    private array             $original_data = [];
-    private string            $file_path;
-    private array             $options       = [
+    private Yaml|Json|Ini|Xml|Php $parser;
+    private array                 $data          = [];
+    private array                 $original_data = [];
+    private string                $file_path;
+    private array                 $options       = [
             'autosave' => true,
     ];
 
