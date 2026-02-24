@@ -5,6 +5,7 @@ namespace JscPhp\Configs;
 use Exception;
 use JscPhp\Configs\bin\Ini;
 use JscPhp\Configs\bin\Json;
+use JscPhp\Configs\bin\Php;
 use JscPhp\Configs\bin\Xml;
 use JscPhp\Configs\bin\Yaml;
 use JscPhp\Configs\Types\Type;
@@ -28,6 +29,7 @@ class Config {
             'json'        => new Json($file_path),
             'yaml', 'yml' => new Yaml($file_path),
             'xml'         => new Xml($file_path),
+            'php'         => new Php($file_path),
             default       => throw new Exception("Unsupported file extension: {$extension}")
         };
         if (file_exists($file_path)) {
@@ -56,6 +58,7 @@ class Config {
             Type::Json => new Json($this->file_path),
             Type::Yaml => new Yaml($this->file_path),
             Type::Xml  => new Xml($this->file_path),
+            Type::Php  => new Php($this->file_path),
             default    => throw new Exception("Unsupported file type: {$type->name}")
         };
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
