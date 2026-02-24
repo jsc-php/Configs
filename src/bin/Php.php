@@ -5,9 +5,7 @@ namespace JscPhp\Configs\bin;
 class Php extends Parser {
 
     public function parseFile(): array {
-        $data = include($this->file_path);
-        print_r($data);
-        return $data;
+        return include($this->file_path);
     }
 
     public function convertArray(array $data): string {
