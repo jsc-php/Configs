@@ -34,8 +34,10 @@ class Config {
         };
         if (file_exists($file_path)) {
             $this->data = $this->parser->parseFile();
-            $this->original_data = $this->data;
+        } else {
+            $this->data = [];
         }
+        $this->original_data = $this->data;
     }
 
     public function __destruct() {
