@@ -8,4 +8,4 @@ require_once '../vendor/autoload.php';
 $config = new Config(__DIR__ . '/test.php');
 
 
-$config->saveAs('test.yaml', Type::Yaml);
+$config->saveAs('test.xml', Type::Xml);

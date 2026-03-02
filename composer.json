@@ -18,5 +18,11 @@
       "name": "James Cavaliere",
       "email": "james.cavaliere@gmail.com"
     }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/jsc-php"
+    }
   ]
 }
