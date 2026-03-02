@@ -6,7 +6,7 @@ ease.
 
 ## Features
 
-- **Multi-format Support**: Seamlessly handle `.json`, `.yaml` / `.yml`, `.ini`, and `.xml` files.
+- **Multi-format Support**: Seamlessly handle `.json`, `.yaml` / `.yml`, `.ini`, `.php`, and `.xml` files.
 - **Magic Access**: Access and modify configuration data using PHP magic properties.
 - **Auto-save**: Automatically persists changes back to the file when the object is destroyed (can be disabled).
 - **Format Conversion**: Easily convert configuration files between supported formats.
@@ -79,6 +79,7 @@ $config->delete('temporary_key');
 - **JSON**: Uses native `json_encode` and `json_decode`.
 - **YAML**: Uses `yaml_emit` and `yaml_parse` (requires `ext-yaml`).
 - **INI**: Uses `parse_ini_file` with typed scanning and a custom writer supporting sections and multi-value keys.
+- **PHP**: Uses `var_export()` to create a return value
 - **XML**: Uses `SimpleXML` for parsing and DOM for formatted output with proper indentation.
 
 ## License
