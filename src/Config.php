@@ -83,20 +83,20 @@ class Config {
     }
 
     public function delete(string ...$keys): void {
+        if (count($keys) === 1) {
+            $keys = explode('.', $keys[0]);
+        }
         $this->_delete($this->data, $keys);
     }
 
     private function _delete(array &$array, array $keys): void {
-        foreach ($keys as $key) {
-            if (array_key_exists($key, $array)) {
-                if (is_array($array[$key])) {
-                    $this->_delete($array[$key], ...array_slice($keys, 1));
-                } else {
-                    unset($array[$key]);
-                }
-                if (empty($array[$key])) {
-                    unset($array[$key]);
-                }
+        if (array_key_exists($keys[0], $array)) {
+            if (count($keys) === 1) {
+                unset($array[$keys[0]]);
+            } else {
+                $key = $keys[0];
+                $keys = array_slice($keys, 1);
+                $this->_delete($array[$key], $keys);
             }
         }
     }
@@ -122,6 +122,13 @@ class Config {
     }
 
     public function get(string ...$keys) {
+        if (count($keys) === 1) {
+            $keys = explode('.', $keys[0]);
+        }
+        return $this->_get($keys);
+    }
+
+    private function _get(array $keys) {
         $work = $this->data;
         for ($i = 0; $i < count($keys); $i++) {
             $work = $work[$keys[$i]] ?? null;
@@ -129,7 +136,10 @@ class Config {
         return $work;
     }
 
-    public function set(mixed $value, string ...$keys): void {
+    public function set(string|array $keys, mixed $value): void {
+        if (is_string($keys)) {
+            $keys = explode('.', $keys);
+        }
         if (count($keys) === 1) {
             $this->data[$keys[0]] = $value;
         } else {
@@ -148,5 +158,4 @@ class Config {
             }
         }
     }
-
 }

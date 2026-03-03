@@ -29,19 +29,24 @@ composer require jsc-php/configs
 use JscPhp\Configs\Config;
 
 // Load a config file (format is determined by file extension)
-$config = new Config('config.json');
+$config = new Config('test.php');
 
 // Get values using magic methods
 $db = $config->database;
 $db_host = $config->database['host'];
 
-
 // Get values using get function
 $db = $config->get('database');
+$db_host = $config->get('database')['host'];
 $db_host = $config->get('database','host');
+$db_host = $config->get('database.host');
+
 
 // Set values
 $config->debug = true;
+$config->set('debug', true);
+$config->set('debug.level', 'info');
+$config->set(['debug','level'], 'info');
 
 // Changes are automatically saved when $config goes out of scope
 ```
@@ -76,7 +81,9 @@ $config->saveAs('settings.json');
 ### Deleting Keys
 
 ```php
-$config->delete('temporary_key');
+$config->delete('key1'); //Deletes array key1
+$config->delete('key1.key2'); //Deletes array key2 within key1
+$config->delete('key1','key2'); //Deletes array key2 within key1
 ```
 
 ## Supported Formats
