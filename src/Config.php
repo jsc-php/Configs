@@ -116,11 +116,11 @@ class Config {
     }
 
     public function get(string ...$keys) {
-        $working_array = $this->data;
+        $work = $this->data;
         for ($i = 0; $i < count($keys); $i++) {
-            $working_array = $working_array[$keys[$i]] ?? null;
+            $work = $work[$keys[$i]] ?? null;
         }
-        return $working_array;
+        return $work;
     }
 
     public function set(mixed $value, string ...$keys): void {

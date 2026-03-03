@@ -32,8 +32,14 @@ use JscPhp\Configs\Config;
 // Load a config file (format is determined by file extension)
 $config = new Config('config.json');
 
-// Get values
-$dbHost = $config->database['host'];
+// Get values using magic methods
+$db = $config->database;
+$db_host = $config->database['host'];
+
+
+// Get values using get function
+$db = $config->get('database');
+$db_host = $config->get('database','host');
 
 // Set values
 $config->debug = true;
