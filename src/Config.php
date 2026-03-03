@@ -8,7 +8,6 @@ use JscPhp\Configs\bin\Json;
 use JscPhp\Configs\bin\Php;
 use JscPhp\Configs\bin\Xml;
 use JscPhp\Configs\bin\Yaml;
-use JscPhp\Configs\Types\Type;
 
 class Config {
     private Yaml|Json|Ini|Xml|Php $parser;
@@ -24,7 +23,22 @@ class Config {
         $this->options = array_merge($this->options, $options);
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
                     strToLower(...);
-        $this->parser = match ($extension) {
+        $this->parser = $this->getParser();
+        if (file_exists($file_path)) {
+            $this->data = $this->parser->parseFile();
+        } else {
+            $this->data = [];
+        }
+        $this->original_data = $this->data;
+    }
+
+    private function getParser(?string $file_path = null): Ini|Php|Json|Xml|Yaml {
+        if (!$file_path) {
+            $file_path = $this->file_path;
+        }
+        $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
+                    strToLower(...);
+        return match ($extension) {
             'ini'         => new Ini($file_path),
             'json'        => new Json($file_path),
             'yaml', 'yml' => new Yaml($file_path),
@@ -32,12 +46,6 @@ class Config {
             'php'         => new Php($file_path),
             default       => throw new Exception("Unsupported file extension: {$extension}")
         };
-        if (file_exists($file_path)) {
-            $this->data = $this->parser->parseFile();
-        } else {
-            $this->data = [];
-        }
-        $this->original_data = $this->data;
     }
 
     public function __destruct() {
@@ -54,15 +62,8 @@ class Config {
         return file_put_contents($this->file_path, $content);
     }
 
-    public function saveAs(string $file_path, Type $type, bool $return = false): string|false|int {
-        $parser = match ($type) {
-            Type::Ini  => new Ini($this->file_path),
-            Type::Json => new Json($this->file_path),
-            Type::Yaml => new Yaml($this->file_path),
-            Type::Xml  => new Xml($this->file_path),
-            Type::Php  => new Php($this->file_path),
-            default    => throw new Exception("Unsupported file type: {$type->name}")
-        };
+    public function saveAs(string $file_path, bool $return = false): string|false|int {
+        $parser = $this->getParser($file_path);
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
                     strtolower(...);
         if (!in_array($extension, $parser->getValidExtensions())) {
