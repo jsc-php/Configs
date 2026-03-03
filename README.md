@@ -65,7 +65,7 @@ use JscPhp\Configs\Types\Type;
 $config = new Config('settings.ini');
 
 // Save as JSON
-$config->saveAs('settings.json', Type::Json);
+$config->saveAs('settings.json');
 ```
 
 ### Deleting Keys
