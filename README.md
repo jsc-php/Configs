@@ -91,7 +91,7 @@ $config->delete('temporary_key');
 
 This project is licensed under the GPL-3.0 License.
 
-[^1]: In order to save changes, file must be writable
+[^1]: To save changes, the config file must be writable
 
 ## Authors
 
