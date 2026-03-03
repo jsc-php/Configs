@@ -54,26 +54,32 @@ class Config {
         }
     }
 
-    public function save(): bool|int {
-        if ($this->data === $this->original_data) {
+    public function save(?string $file_path = null, bool $return = false): bool|int|string {
+        if ($this->data === $this->original_data && $return === false) {
             return true;
         }
-        $content = $this->parser->convertArray($this->data);
-        return file_put_contents($this->file_path, $content);
-    }
-
-    public function saveAs(string $file_path, bool $return = false): string|false|int {
+        if ($file_path === null) {
+            $file_path = $this->file_path;
+        }
         $parser = $this->getParser($file_path);
         $extension = pathinfo($file_path, PATHINFO_EXTENSION) |>
-                    strtolower(...);
+                    strToLower(...);
         if (!in_array($extension, $parser->getValidExtensions())) {
-            throw new Exception("Invalid file extension: {$extension}");
+            throw new Exception("Unsupported file extension: {$extension}");
         }
         $content = $parser->convertArray($this->data);
         if ($return) {
             return $content;
         }
+        if (!is_writable($file_path)) {
+            throw new Exception("File {$file_path} is not writable");
+        }
+
         return file_put_contents($file_path, $content);
+    }
+
+    public function saveAs(string $file_path, bool $return = false): string|false|int {
+        return $this->save($file_path, $return);
     }
 
     public function delete(string ...$keys): void {
