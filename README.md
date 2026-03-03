@@ -1,14 +1,13 @@
 # Configs
 
 A simple and flexible PHP library for parsing and writing configuration files. Supports JSON, YAML, INI, and XML formats
-with
-ease.
+with ease.
 
 ## Features
 
 - **Multi-format Support**: Seamlessly handle `.json`, `.yaml`, `.ini`, `.php`, and `.xml` files.
 - **Magic Access**: Access and modify configuration data using PHP magic properties.
-- **Auto-save**: Automatically persists changes back to the file when the object is destroyed (can be disabled).
+- **Auto-save**: Automatically persists changes back to the file when the object is destroyed (can be disabled)[^1].
 - **Format Conversion**: Easily convert configuration files between supported formats.
 - **Type Safety**: Built for PHP 8.5+ with modern syntax.
 
@@ -91,6 +90,8 @@ $config->delete('temporary_key');
 ## License
 
 This project is licensed under the GPL-3.0 License.
+
+[^1]: In order to save changes, file must be writable
 
 ## Authors
 
