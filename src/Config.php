@@ -71,7 +71,7 @@ class Config {
         if ($return) {
             return $content;
         }
-        if (!is_writable($file_path)) {
+        if (file_exists($file_path) && !is_writable($file_path)) {
             throw new Exception("File {$file_path} is not writable");
         }
 
